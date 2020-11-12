@@ -23,7 +23,7 @@ def read_schedule():
         f.close()
         try:
             json_data = json.loads(json_s)
-        except Exception, e:
+        except Exception. e:
             json_data = []
 
         for lesson in json_data.values():
@@ -44,9 +44,9 @@ def read_schedule():
         return schedule
 
         # schedule 
-    except IOError, e:
+    except IOError. e:
         return []
-    except Exception, e:
+    except Exception. e:
         return []
 
 class Alarm(threading.Thread):
@@ -63,12 +63,12 @@ class Alarm(threading.Thread):
                 for schedule_item in self.schedule:
                     if now.tm_hour == schedule_item['h'] and now.tm_min == schedule_item['m']:
                         
-                        print "Ring start..."
+                        print ("Ring start...")
                         GPIO.output(25, True)
                         
                         time.sleep(5)
                         
-                        print "Ring end..."
+                        print ("Ring end...")
                         GPIO.output(25, False)
 
                         self.schedule = read_schedule() #reload schedule if it was changed
@@ -77,7 +77,7 @@ class Alarm(threading.Thread):
                 #print "Check at "+str(now.tm_hour)+':'+str(now.tm_min)+':'+str(now.tm_sec) 
 
                 time.sleep(1)
-        except Exception, e:
+        except Exception. e:
             raise e
             # return
     def die(self):
@@ -88,11 +88,11 @@ alarm = Alarm()
 def main():
     try:
         alarm.start()
-        print 'Started daemon...'
+        print ('Started daemon...')
         while True:
             continue
     except KeyboardInterrupt:
-        print '^C received, shutting down daemon.'
+        print ('^C received, shutting down daemon.')
         alarm.die()
 
 if __name__ == '__main__':
