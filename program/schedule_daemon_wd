@@ -1,0 +1,57 @@
+#!/bin/sh
+ 
+### BEGIN INIT INFO
+# Provides:          schedule_daemon_wd
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# description: School Ring Schedule daemon watchdog
+# processname: School Ring Schedule daemon watchdog
+### END INIT INFO
+
+export SCHEDULE_ROOT=/home/pi/ring_app
+export PATH=$PATH:$SCHEDULE_ROOT
+
+SERVICE_PID=`ps -ef | grep daemon.py | grep -v grep | awk '{print $2}'`
+ 
+check_service() {
+        if [ -z $SERVICE_PID ];then
+            service schedule_daemon start
+        fi
+}
+ 
+check_service
+
+usage() {
+    echo "schedule_daemon_wd {start|stop|status}"
+    exit 0
+}
+ 
+case $1 in
+    start ) 
+
+        if [ $SERVICE_PID ];then
+            echo "schedule_daemon is already running. PID: $SERVICE_PID"
+        else
+            service schedule_daemon start
+        fi
+        ;;
+    stop ) 
+
+        if [ $SERVICE_PID ];then
+            service schedule_daemon stop
+        else
+            echo "schedule_daemon is already stopped"
+        fi
+        ;;
+    status) 
+        if [ $SERVICE_PID ];then
+            echo "schedule_daemon is running. PID: $SERVICE_PID"
+        else
+            echo "schedule_daemon is not running"
+        fi
+        ;;
+    *) usage
+        ;;
+esac

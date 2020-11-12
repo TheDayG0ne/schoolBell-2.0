@@ -1,0 +1,17 @@
+#!/bin/bash
+
+LOG="/var/log/rtc-sync.log"
+DATE=`date`
+
+sleep 30
+
+echo "*** $DATE" >>$LOG
+
+until ping -nq -c3 8.8.8.8; do
+    echo "No network, updating system clock from RTC." >>$LOG
+    rtc-pi 2>&1
+    exit
+done
+
+echo "Network detected. Updating RTC." >>$LOG
+date +%Y%m%d%H%M%S |xargs ./rtc-pi 2>&1

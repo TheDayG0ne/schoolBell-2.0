@@ -1,0 +1,48 @@
+#!/bin/sh
+ 
+### BEGIN INIT INFO
+# Provides:          schedule_webserver
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# description: School Ring Schedule web-server
+# processname: School Ring Schedule web-server
+### END INIT INFO
+
+export SCHEDULE_ROOT=/home/pi/ring_app
+export PATH=$PATH:$SCHEDULE_ROOT
+
+SERVICE_PID=`ps -ef | grep webserver.py | grep -v grep | awk 'END{print $2}'`
+ 
+usage() {
+        echo "service schedule_webserver {start|stop|status}"
+        exit 0
+}
+
+case $1 in
+ 
+    start) 
+        if [ $SERVICE_PID ];then
+            echo "Service is already running. PID: $SERVICE_PID"
+        else
+            $SCHEDULE_ROOT/webserver.py& 2>&1
+        fi
+        ;;
+    stop) 
+        if [ $SERVICE_PID ];then
+            kill -9 $SERVICE_PID
+        else
+            echo "Service is not running"
+        fi
+        ;;
+    status) 
+        if [ $SERVICE_PID ];then
+            echo "Running. PID: $SERVICE_PID"
+        else
+            echo "Not running"
+        fi
+        ;;
+    *) usage
+        ;;
+esac

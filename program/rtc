@@ -1,0 +1,31 @@
+#!/bin/sh
+# /etc/init.d/rtc 
+
+### BEGIN INIT INFO
+# Provides:          RTC controll
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Simple script to start RTC sync
+# Description:       A simple script from prostosergik <serge.liskovsky@gmail.com> which will run script that synchronizes RTC module clock with system clock at startup.
+### END INIT INFO
+
+
+case "$1" in
+  start)
+    echo "RTC sync..."
+    /usr/local/bin/update_rtc& 2>&1
+    ;;
+  stop)
+    echo "Stopping RTC Sync..."
+    # kill application you want to stop
+    killall update_rtc
+    ;;
+  *)
+    echo "Usage: /etc/init.d/rtc {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0

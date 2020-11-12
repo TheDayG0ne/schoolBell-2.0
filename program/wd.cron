@@ -1,0 +1,4 @@
+#Watchdog tasks 
+
+* * * * * /etc/init.d/schedule_daemon_wd
+* * * * * /etc/init.d/schedule_webserver_wd
