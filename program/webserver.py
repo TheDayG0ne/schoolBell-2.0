@@ -106,7 +106,7 @@ class MainRequestHandler(BaseHTTPRequestHandler):
                     f.close()
 
                     HTMLOut(self, 'Saved OK.' + JS_REDIRECT)
-                except IOError, e:
+                except IOError. e:
                     # raise e
                     HTMLOut(self, 'Error saving. IO error. '+e.message)
             else:
@@ -192,10 +192,10 @@ def readScheduleRemote():
 def main():
     try:
         server = HTTPServer(('', 8088), MainRequestHandler)
-        print 'Started httpserver...'
+        print ('Started httpserver...')
         server.serve_forever()
     except KeyboardInterrupt:
-        print '^C received, shutting down server.'
+        print ('^C received, shutting down server.')
         server.socket.close()
 
 if __name__ == '__main__':
